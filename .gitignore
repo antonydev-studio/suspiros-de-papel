@@ -44,6 +44,12 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Project meta docs (internal use only)
+ARCHITECTURE.md
+CLAUDE.md
+ROADMAP.md
+AGENTS.md
+
 # AI tool caches (like node_modules — reinstallable from skills-lock.json)
 .agents/
 
