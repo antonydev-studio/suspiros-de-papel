@@ -1,0 +1,92 @@
+---
+description: Frontend design and responsive layout rules for Suspiros de Papel. Active for all component and section files. Enforces warm-premium-minimal aesthetic, Tailwind design tokens, and mobile-first responsive patterns.
+globs: ["src/components/**/*.tsx", "src/app/**/*.tsx"]
+alwaysApply: false
+---
+
+# Frontend Design + Responsive — Suspiros de Papel
+
+## Design Aesthetic
+
+**Warm premium minimal.** Editorial, luxury-inspired, calm. Generous whitespace. Never generic.
+
+- Cards: warm shadow · radius consistent with design tokens · no heavy borders
+- Motion: fade-up on scroll via `useScrollReveal`. No bounces. No framer-motion.
+- Icons: thin line stroke ~1.5px. No solid fills.
+- Dividers: 1px at low opacity — never color blocks.
+
+## Color Tokens (Tailwind extensions)
+
+```
+text-primary     → main headings, buttons
+text-secondary   → subheadings, borders
+text-accent      → highlights, hover states
+bg-background    → page background
+bg-olive         → logo, decorative elements
+```
+
+Never raw hex. Never `text-gray-*` for brand text.
+
+## Typography
+
+```
+font-headline  → Noto Serif  → all <h1>–<h3> and display text
+font-body      → Plus Jakarta Sans → all body, labels, UI
+```
+
+Italic: display headings ONLY. Never body italic.
+
+## Section Template
+
+```tsx
+import { Container } from "@/components/ui/Container"
+import { useScrollReveal } from "@/hooks/useScrollReveal"
+
+export function MySection() {
+  const ref = useScrollReveal<HTMLElement>()
+  return (
+    <section ref={ref} className="section-padding scroll-reveal">
+      <Container>
+        {/* content */}
+      </Container>
+    </section>
+  )
+}
+```
+
+## Responsive Patterns
+
+Mobile-first always. Use Tailwind breakpoints: `sm:` `md:` `lg:` `xl:`.
+
+```tsx
+// Grid: stack on mobile, columns on desktop
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+// Typography: fluid with clamp via Tailwind
+<h2 className="text-2xl md:text-3xl lg:text-4xl font-headline">
+
+// Spacing: generous and consistent
+<section className="section-padding">  {/* uses CSS custom property */}
+```
+
+Touch targets: minimum 44×44px for interactive elements.
+
+## React 19 Patterns
+
+```tsx
+// Server Components default — add "use client" only when needed
+// No forwardRef — ref is a regular prop in React 19
+// useMemo/useCallback only when profiler confirms bottleneck
+// Images: always next/image with explicit width/height and priority on LCP
+```
+
+## Performance Budget (Phase 1)
+
+- No framer-motion (not installed)
+- Next/image for all portfolio images in `.webp`
+- No new npm packages without explicit approval
+- LCP image must have `priority` prop
+
+## Portfolio Images
+
+Before adding: convert → `.webp` → `public/images/portfolio/` → add to `src/constants/portfolio.ts` → max 6 `featured: true` → `aspectRatio` must match real file.

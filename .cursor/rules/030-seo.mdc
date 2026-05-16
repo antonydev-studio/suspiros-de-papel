@@ -1,0 +1,84 @@
+---
+description: SEO rules for Suspiros de Papel Phase 1 launch tasks — meta tags, sitemap, schema, robots.txt, Core Web Vitals. Active for app/, public/, and SEO-related files.
+globs: ["src/app/**/*.tsx", "src/app/**/*.ts", "public/sitemap*", "public/robots*"]
+alwaysApply: false
+---
+
+# SEO — Suspiros de Papel
+
+Phase 1 launch checklist items. Priority order: Crawlability → Technical → On-Page → Content.
+
+## Meta Tags (app/layout.tsx)
+
+```tsx
+export const metadata: Metadata = {
+  title: {
+    template: "%s | Suspiros de Papel",
+    default: "Suspiros de Papel — Regalos personalizados en Zihuatanejo",
+  },
+  description: "Sublimación, grabado láser y papelería personalizada en Zihuatanejo, Guerrero. Pide tu cotización por WhatsApp.",
+  keywords: ["regalos personalizados", "sublimación Zihuatanejo", "grabado láser Guerrero"],
+  openGraph: {
+    type: "website",
+    locale: "es_MX",
+    url: "https://suspirosdepapel.mx",
+    siteName: "Suspiros de Papel",
+  },
+  twitter: { card: "summary_large_image" },
+  robots: { index: true, follow: true },
+}
+```
+
+## robots.txt (public/robots.txt)
+
+```
+User-agent: *
+Allow: /
+Sitemap: https://suspirosdepapel.mx/sitemap.xml
+```
+
+## sitemap.xml (app/sitemap.ts)
+
+```ts
+import { MetadataRoute } from "next"
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    { url: "https://suspirosdepapel.mx", lastModified: new Date(), changeFrequency: "monthly", priority: 1 },
+    { url: "https://suspirosdepapel.mx/portafolio", lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+  ]
+}
+```
+
+## JSON-LD Schema (app/layout.tsx or page.tsx)
+
+```tsx
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Suspiros de Papel",
+  description: "Regalos personalizados en Zihuatanejo",
+  address: { "@type": "PostalAddress", addressLocality: "Zihuatanejo", addressRegion: "Guerrero", addressCountry: "MX" },
+  telephone: SITE.whatsapp,
+  url: "https://suspirosdepapel.mx",
+}
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+```
+
+## Core Web Vitals Targets
+
+- LCP < 2.5s → use `priority` on hero image, `next/image` for all portfolio
+- CLS < 0.1 → explicit width/height on all images, no layout shifts
+- INP < 200ms → no heavy client-side JS in Phase 1
+
+## Image SEO
+
+- All images: descriptive Spanish `alt` text
+- Portfolio images: `.webp` format, explicit dimensions
+- OG image: 1200×630px at `public/og-image.jpg`
+
+## Audit Before Launch
+
+Run `/seo-audit` in Claude Code for full pre-launch check.
+Priority: technical SEO → on-page → content → performance.

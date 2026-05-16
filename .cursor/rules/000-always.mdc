@@ -1,0 +1,78 @@
+---
+description: Core project rules for Suspiros de Papel. Always active — identity, PNPM, design system, exports, forbidden patterns.
+alwaysApply: true
+---
+
+# Suspiros de Papel — Core Rules
+
+**Business:** Personalized gifts (sublimation, laser engraving, stationery) — Zihuatanejo, México
+**Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS · pnpm
+**Phase:** 1 — Landing page only. No backend yet. `src/features/` is RESERVED.
+
+## Package Manager
+
+**PNPM ONLY.** Never write `npm`, never generate `package-lock.json`.
+
+```bash
+pnpm dev          # start dev server
+pnpm build        # production build
+pnpm lint         # eslint
+pnpm add <pkg>    # add dependency
+```
+
+Run `pnpm lint && pnpm build` before every commit.
+
+## Directory Contract
+
+```
+src/app/              → pages + layouts ONLY (no business logic)
+src/components/ui/    → stateless primitives: Button, Container
+src/components/layout/→ Navbar, Footer
+src/components/sections/ → page-level sections (Hero, Portfolio, etc.)
+src/constants/        → pure static data (no React, no side effects)
+src/hooks/            → custom hooks
+src/lib/              → pure utility functions
+src/types/            → shared TypeScript types
+src/features/         → RESERVED Phase 2 — do not touch
+```
+
+Import rules: sections/ may not import other sections/. ui/ may not import sections/ or constants/.
+
+## Exports
+
+**Named exports only.** Default exports are forbidden.
+
+```tsx
+export function MySection() { ... }   // ✅
+export default function MySection() { ... }  // ❌
+```
+
+## Design System
+
+- Colors → CSS vars (`text-primary`, `bg-accent`, `text-secondary`, etc.) — **NEVER hardcode hex**
+- Headings → `font-headline` (Noto Serif)
+- Body → `font-body` (Plus Jakarta Sans)
+- No `style={{}}` inline styles — exception: `objectPosition` on `<Image>` only
+- No new Google Fonts without updating `layout.tsx` + `tailwind.config.ts`
+
+## WhatsApp URLs
+
+```ts
+import { formatWhatsAppUrl } from "@/lib/whatsapp"
+const link = formatWhatsAppUrl("Hola, me interesa un pedido")
+```
+
+## Scroll Reveal Pattern
+
+```tsx
+const ref = useScrollReveal<HTMLElement>()
+<section ref={ref} className="scroll-reveal section-padding">
+```
+
+## Forbidden
+
+`npm` · `any` types · `console.log` · `style={{}}` (except objectPosition) · hardcoded hex · default exports · `framer-motion` · business logic in `app/page.tsx` · cross-section imports
+
+## Language
+
+UI copy: Spanish. Code/names/comments: English.

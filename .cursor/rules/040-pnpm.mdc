@@ -1,0 +1,44 @@
+---
+description: pnpm rules — bans npm, enforces lockfile integrity. Active for package.json and config files.
+globs: ["package.json", "pnpm-workspace.yaml", ".npmrc", "*.config.*"]
+alwaysApply: false
+---
+
+# pnpm — Suspiros de Papel
+
+npm is BANNED. Never suggest `npm install`, `npm run`, or generate `package-lock.json`.
+
+## Commands
+
+```bash
+pnpm install          # install deps
+pnpm dev              # dev server
+pnpm build            # production build
+pnpm lint             # eslint
+pnpm add <pkg>        # add dependency
+pnpm add -D <pkg>     # add dev dependency
+pnpm remove <pkg>     # remove dependency
+```
+
+## CI / Pre-commit
+
+```bash
+pnpm lint && pnpm build   # must pass before every commit
+```
+
+## Lockfile
+
+- Lockfile: `pnpm-lock.yaml` — commit this, never `.gitignore` it
+- If `package-lock.json` appears: `rm package-lock.json && pnpm install`
+- Never edit `pnpm-lock.yaml` manually
+
+## Adding Packages
+
+1. Check if capability exists in current deps first
+2. `pnpm add <pkg>` — never npm
+3. Run `pnpm build` after adding to verify no conflicts
+4. No new packages for Phase 1 UI unless explicitly approved
+
+## Workspace Config
+
+Check `pnpm-workspace.yaml` and `.npmrc` for workspace structure before making changes.

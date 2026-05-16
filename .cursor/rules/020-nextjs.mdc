@@ -1,0 +1,107 @@
+---
+description: Next.js 16 App Router and React 19 best practices. Active for TypeScript source files. Prevents waterfall data fetching, bundle bloat, and common App Router mistakes.
+globs: ["src/**/*.ts", "src/**/*.tsx", "src/app/**/*"]
+alwaysApply: false
+---
+
+# Next.js 16 + React 19 — Suspiros de Papel
+
+## Version Check
+
+This repo runs Next.js 16 (App Router). Before writing Next.js-specific code:
+
+```bash
+cat node_modules/next/package.json | grep '"version"'
+```
+
+APIs differ from training data. Treat older knowledge as potentially stale.
+
+## App Router Rules
+
+```
+app/page.tsx        → imports sections ONLY. No business logic.
+app/layout.tsx      → fonts, metadata, global providers
+app/globals.css     → CSS vars, Tailwind base, design tokens
+```
+
+No `getServerSideProps` or `getStaticProps` — those are Pages Router. Use async Server Components.
+
+## Server vs Client Components
+
+```tsx
+// Default: Server Component (no directive needed)
+// "use client" ONLY when you need: useState, useEffect, browser APIs, event handlers
+
+// ❌ Wrong: making layout components client-side
+"use client"
+export function HeroSection() {  // just renders HTML, no interactivity
+  return <section>...</section>
+}
+
+// ✅ Right: Server Component by default
+export function HeroSection() {
+  return <section>...</section>
+}
+```
+
+## Eliminating Waterfalls (CRITICAL)
+
+```tsx
+// ❌ Sequential (waterfall)
+const a = await fetchA()
+const b = await fetchB()  // waits for A
+
+// ✅ Parallel
+const [a, b] = await Promise.all([fetchA(), fetchB()])
+```
+
+## Image Optimization
+
+```tsx
+import Image from "next/image"
+
+// ✅ Always explicit dimensions + WebP + priority on LCP
+<Image
+  src="/images/portfolio/item.webp"
+  alt="Descripción del producto"
+  width={600}
+  height={400}
+  priority  // on LCP image only
+  className="object-cover"
+/>
+```
+
+## TypeScript
+
+```tsx
+// No `any` — use generics or `unknown`
+// Props interfaces above component, not inline
+interface SectionProps {
+  heading?: string
+}
+export function Section({ heading = "Default" }: SectionProps) { ... }
+```
+
+## Metadata (Phase 1 launch task)
+
+```tsx
+// app/layout.tsx
+export const metadata: Metadata = {
+  title: "Suspiros de Papel — Regalos personalizados en Zihuatanejo",
+  description: "...",
+  openGraph: { ... }
+}
+```
+
+## Bundle Rules
+
+- No default exports (prevents tree-shaking issues)
+- No framer-motion (not installed, use `useScrollReveal`)
+- No lodash/moment — use native JS
+- Analyze with `pnpm build` → check output sizes
+
+## Code Quality
+
+- Components ≤ 150 lines — split if longer
+- No `console.log` in commits
+- `pnpm lint && pnpm build` must pass before commit
