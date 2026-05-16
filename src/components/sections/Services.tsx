@@ -185,7 +185,7 @@ export function Services() {
         {/* Header */}
         <div className="text-center mb-12 lg:mb-24 relative">
           <h2 className="section-heading mb-6">
-            ¿Tienes un proyecto{" "}
+            Tienes un proyecto{" "}
             <br />
             <span className="italic font-normal">especial?</span>
           </h2>
