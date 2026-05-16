@@ -1,7 +1,7 @@
 /**
  * Single source of truth for all brand-level data.
  *
- * Consumed by: Navbar, Footer, CTA, HeroContent, FAQ, OurStory, page metadata.
+ * Consumed by: Navbar, Footer (incl. developerCredit), CTA, HeroContent, FAQ, OurStory, page metadata.
  * To extend: add new fields here and import where needed — never hardcode brand
  * values (name, phone, social URLs) inside components.
  */
@@ -16,4 +16,9 @@ export const SITE = {
   instagramUrl: "https://www.instagram.com/suspirosdepapel.mx/",
   facebookUrl: "https://www.facebook.com/share/18iCcH9ovT/",
   tiktokUrl: "https://www.tiktok.com/@yahairacortez852?_r=1&_t=ZS-95dD3gbEAXF",
+  /** Footer attribution — design & development credit (external). */
+  developerCredit: {
+    url: "https://www.antonydev.com/",
+    displayName: "AntonyDev.",
+  },
 } as const

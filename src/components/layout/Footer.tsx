@@ -187,15 +187,26 @@ export function Footer() {
 
       </div>
 
-      {/* ── Bottom bar ──────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-8 py-6 border-t border-outline-variant/10 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="text-muted text-xs tracking-widest uppercase">
+      {/* ── Bottom bar: mobile/tablet — credit last, centered; desktop — 3-col, credit right + vertically centered ── */}
+      <div className="max-w-7xl mx-auto px-8 py-6 border-t border-outline-variant/10 flex flex-col items-center text-center gap-4 lg:grid lg:grid-cols-3 lg:items-center lg:gap-6 lg:text-left">
+        <p className="text-muted text-xs tracking-widest uppercase font-body lg:justify-self-start lg:text-left">
           © 2026 {SITE.name}. Handcrafted Excellence.
         </p>
-        <div className="flex gap-8 text-[10px] font-bold tracking-widest uppercase text-muted">
+        <div className="flex flex-wrap justify-center gap-6 sm:gap-8 text-[10px] font-bold tracking-widest uppercase text-muted lg:justify-self-center">
           <Link href="#" className="hover:text-primary transition-colors">Términos</Link>
           <Link href="#" className="hover:text-primary transition-colors">Privacidad</Link>
         </div>
+        <p className="text-muted text-xs font-body normal-case tracking-normal leading-relaxed lg:justify-self-end lg:self-center lg:text-right">
+          Diseñado y desarrollado por{" "}
+          <a
+            href={SITE.developerCredit.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-bold text-on-surface-variant hover:text-primary transition-colors"
+          >
+            {SITE.developerCredit.displayName}
+          </a>
+        </p>
       </div>
 
     </footer>
